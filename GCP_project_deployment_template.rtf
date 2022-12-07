@@ -1,0 +1,211 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.14393}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9\par
+\b\fs28 Template for setting up a new deployable project at GCP (Flask at GAE)\par
+\b0\fs22\par
+notes:\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 'natality' is project name. replace it with a new name.\par
+{\pntext\f1\'B7\tab}editing html files is trivial. \par
+{\pntext\f1\'B7\tab}if editing html and main.py seems easy, do evth in a Vertex Notebook and use Cloud Shell only for debugging\par
+{\pntext\f1\'B7\tab}this template developed based on this series of posts:\par
+
+\pard\sa200\sl276\slmult1 {{\field{\*\fldinst{HYPERLINK https://medium.com/@nutanbhogendrasharma/deploy-machine-learning-model-in-google-cloud-platform-using-flask-part-3-20db0037bdf8 }}{\fldrslt{https://medium.com/@nutanbhogendrasharma/deploy-machine-learning-model-in-google-cloud-platform-using-flask-part-3-20db0037bdf8\ul0\cf0}}}}\f0\fs22\par
+\par
+\par
+\par
+\b General workflow:\b0\par
+First, create a project folder like 'pg_natality' in project_repos folder. put there empty folder cloned frm GH. build a model there, name it like tit_model.ipynb. Put model artifact into /<project>-app/ folder.\par
+\b To make deployment, follow this guide:\b0\par
+\par
+mkdir natality-app\par
+cd natality-app\par
+pip install virtualenv\par
+virtualenv natality-app-venv\par
+source natality-app-venv/bin/activate\par
+pip install Flask\par
+nano main.py\par
+
+\pard\li2160\sa200\sl276\slmult1 #import Flask \par
+from flask import Flask\par
+#create an instance of Flask\par
+app = Flask(__name__)\par
+@app.route('/')\par
+def home():\par
+    return "Hello World"\par
+if __name__ == '__main__':\par
+    app.run(debug=True)\par
+
+\pard\sa200\sl276\slmult1\par
+python main.py\par
+mkdir templates\par
+cd templates\par
+nano home.html\par
+
+\pard\li2160\sa200\sl276\slmult1 <!doctype html>\par
+<html>\par
+  <head>\par
+    <title> Predict Baby Weight </title>\par
+    <meta charset="utf-8">\par
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\par
+    <link rel="stylesheet" href="{{\field{\*\fldinst{HYPERLINK https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css }}{\fldrslt{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\ul0\cf0}}}}\f0\fs22 ">\par
+    <script src="{{\field{\*\fldinst{HYPERLINK https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js }}{\fldrslt{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\ul0\cf0}}}}\f0\fs22 "></script>\par
+    <script src="{{\field{\*\fldinst{HYPERLINK https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js }}{\fldrslt{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js\ul0\cf0}}}}\f0\fs22 "></script>    \par
+  </head>\par
+  <body>\par
+      <div class="container">\par
+        <div class="row my-5 pl-3">\par
+            <h1>Predict Baby Weight</h1>\par
+        </div>\par
+        <!-- Starts form section -->\par
+        <div class="form-container ">\par
+            <form class="form-horizontal" action = "/predict/" method="post">\par
+                <div class="form-group row">\par
+                  <label class="control-label col-sm-2" for="is_male">Is male? (Enter 1 or 0):</label>\par
+                  <div class="col-sm-4">\par
+                    <input type="text" class="form-control" id="is_male" name="is_male">\par
+                  </div>\par
+                </div>\par
+                <div class="form-group row">\par
+                  <label class="control-label col-sm-2" for="mother_age">Mother's age:</label>\par
+                  <div class="col-sm-4">          \par
+                    <input type="text" class="form-control" id="mother_age" name="mother_age">\par
+                  </div>\par
+                </div>\par
+                <div class="form-group row">\par
+                  <label class="control-label col-sm-2" for="plurality">Plurality:</label>\par
+                  <div class="col-sm-4">\par
+                    <input type="text" class="form-control" id="plurality" name="plurality">\par
+                  </div>\par
+                <div class="form-group row">\par
+                  <label class="control-label col-sm-2" for="gestation_weeks">Gestation (in weeks):</label>\par
+                  <div class="col-sm-4">\par
+                    <input type="text" class="form-control" id="gestation_weeks" name="gestation_weeks">\par
+                  </div>\par
+                </div>\par
+                <div class="form-group row"> \par
+                <label class="control-label col-sm-2" for="">&nbsp;</label>                \par
+                  <div class="col-sm-offset-2 col-sm-4">\par
+                    <button type="submit" class="btn btn-primary">Predict</button>\par
+                  </div>\par
+                </div>\par
+              </form>\par
+            <!-- Ends form section -->\par
+        </div>\par
+    </div>\par
+  </body>\par
+</html>\par
+
+\pard\sa200\sl276\slmult1 cd ..\par
+nano main.py\par
+
+\pard\li2160\sa200\sl276\slmult1 #import Flask \par
+from flask import Flask, render_template\par
+#create an instance of Flask\par
+app = Flask(__name__)\par
+@app.route('/')\par
+def home():\par
+    return render_template('home.html')\par
+if __name__ == '__main__':\par
+    app.run(debug=True)\par
+
+\pard\sa200\sl276\slmult1 (to check http locally, can use lynx {{\field{\*\fldinst{HYPERLINK http://127.0.0.1:5000 }}{\fldrslt{http://127.0.0.1:5000\ul0\cf0}}}}\f0\fs22  -dump as an alternative to baseline curl)\par
+(notice that lynx pings dynamically, so you do not have to run it repeatedly)\par
+cd templates\par
+nano predict.html\par
+
+\pard\li2160\sa200\sl276\slmult1 <!doctype html>\par
+<html>\par
+  <head>\par
+    <title> Prediction </title>\par
+    <meta charset="utf-8">\par
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">\par
+    <link rel="stylesheet" href="{{\field{\*\fldinst{HYPERLINK https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css }}{\fldrslt{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\ul0\cf0}}}}\f0\fs22 ">\par
+    <script src="{{\field{\*\fldinst{HYPERLINK https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js }}{\fldrslt{https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\ul0\cf0}}}}\f0\fs22 "></script>\par
+    <script src="{{\field{\*\fldinst{HYPERLINK https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js }}{\fldrslt{https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js\ul0\cf0}}}}\f0\fs22 "></script>    \par
+  </head>\par
+  <body>\par
+      <div class="container">\par
+        <div class="row my-5 pl-3">\par
+            <h1>Prediction is \{\{ prediction \}\}</h1>\par
+        </div>\par
+    </div>\par
+  </body>\par
+</html>\par
+
+\pard\sa200\sl276\slmult1 (put the model in the root project folder)\par
+pip install numpy\par
+pip install joblib\par
+pip install sklearn==0.0\par
+pip install xgboost\par
+\par
+pip install pandas\par
+pip install --upgrade google-cloud-storage\par
+pip install yfinance\par
+\par
+nano main.py\par
+
+\pard\li2160\sa200\sl276\slmult1 #import Flask \par
+from flask import Flask, render_template, request\par
+#create an instance of Flask\par
+app = Flask(__name__)\par
+@app.route('/')\par
+def home():\par
+    return render_template('home.html')\par
+@app.route('/predict/', methods=['GET','POST'])\par
+def predict():\par
+    if request.method == "POST":\par
+        #get form data\par
+        tv = request.form.get('tv')\par
+        radio = request.form.get('radio')\par
+        newspaper = request.form.get('newspaper')\par
+        #call preprocessDataAndPredict and pass inputs\par
+        try:\par
+            prediction = preprocessDataAndPredict(tv, radio, newspaper)\par
+            #pass prediction to template\par
+            return render_template('predict.html', prediction = prediction)\par
+        except ValueError:\par
+            return "Please Enter valid values"\par
+        pass        \par
+    pass\par
+def preprocessDataAndPredict(tv, radio, newspaper):\par
+    test_data = [tv, radio, newspaper]\par
+    print(test_data)\par
+    test_data = np.array(test_data).astype(np.float) \par
+    test_data = test_data.reshape(1,-1)\par
+    print(test_data)\par
+    file = open("lr_model.pkl","rb")\par
+    trained_model = joblib.load(file)\par
+    prediction = trained_model.predict(test_data)\par
+    return prediction\par
+    pass\par
+if __name__ == '__main__':\par
+    app.run(debug=True)\par
+
+\pard\sa200\sl276\slmult1 (run locally, make sure it works)\par
+[from project root] pip freeze > requirements.txt\par
+(you need 10-15 packages in requirements. remove some if there are too many)\par
+nano app.yaml\par
+
+\pard\li2160\sa200\sl276\slmult1 runtime: python38\par
+service: "<project name>"\par
+
+\pard\sa200\sl276\slmult1 gcloud init\par
+gcloud app deploy\par
+\par
+\par
+\par
+\par
+\par
+Debugging notes:\par
+if app works locally, but not on gae, make sure that requirements.txt contains all dependencies.\par
+gae console > services has logs for each service. this decreases need to ever use cloud shell.\par
+f1 instance of gae may have inusfficient ram for some use cases.\par
+i can put my own files into gae app folder. this will work as long as their path is specified relative to that folder.\par
+\par
+\par
+\par
+\par
+}
+ 
