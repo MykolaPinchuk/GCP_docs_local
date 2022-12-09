@@ -13,6 +13,18 @@ The easiest way to do model monitoring seems to do evth within Vertex. This coul
 In general, I am still hesitant to go Vertex AI path because it seems not that mature, it will be harder to find info online and I will lose a lot of flexibility. Plus I have some time now to learn both DS/ML and SWE. Vertex AI can abstract away SWE so much that I will not learn anything there…
 
 
+Built a dahboard on Data/Looker Studio. It works and dynamically updates a dashboard as underlying BQ changes.
+Overall the Medium article above makes building a dashboard pretty easy. When creating a bucket, add www. to its name in front of a domain.
+
+
+
+
+Webhosting:
+1 webpage on a domain is fine now.
+As I add more ML models, I will need to use this domain with multiple webpages.
+Then will take a look at these resources:
+https://stackoverflow.com/questions/54865376/is-it-possible-to-serve-different-static-websites-from-the-same-google-storage-b
+https://cloud.google.com/storage/docs/static-website#tip-subdomain
 
 
 
@@ -22,7 +34,9 @@ In general, I am still hesitant to go Vertex AI path because it seems not that m
 
 
 
-<iframe width="600" height="450" src="https://datastudio.google.com/embed/reporting/bfd5439a-4201-4657-b281-8edc7915b9c3/page/XNt9C" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+
+
 
 
 My domain (1 yr):
