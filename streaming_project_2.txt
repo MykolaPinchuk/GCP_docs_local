@@ -1,0 +1,32 @@
+### using aviationstack API to pull flight data:
+
+curl https://api.aviationstack.com/v1/flights?access_key=25d561dc44f344d6aa50a6839b1ce76b&flight_date=2019-12-31
+
+
+curl http://api.aviationstack.com/v1/flights?access_key=25d561dc44f344d6aa50a6839b1ce76b&flight_date=2021-08-01
+
+
+pip install pycurl
+pip install certifi
+
+import pycurl
+import certifi
+from io import BytesIO
+# Creating a buffer as the cURL is not allocating a buffer for the network response
+buffer = BytesIO()
+c = pycurl.Curl()
+#initializing the request URL
+c.setopt(c.URL, 'http://api.aviationstack.com/v1/flights?access_key=25d561dc44f344d6aa50a6839b1ce76b')
+#setting options for cURL transfer  
+c.setopt(c.WRITEDATA, buffer)
+#setting the file name holding the certificates
+c.setopt(c.CAINFO, certifi.where())
+# perform file transfer
+c.perform()
+#Ending the session and freeing the resources
+c.close()
+
+#retrieve the content BytesIO
+body = buffer.getvalue()
+#decoding the buffer 
+print(body.decode('iso-8859-1'))
