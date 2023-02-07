@@ -1,0 +1,79 @@
+this a log of my attempts to get started with GCP
+
+10/19:
+
+[on GPU support]
+
+When choosing Python 3 + CUDA image, nvidia-smi works in terminal but not in Python notebook.
+This is ok. I can fit xgb with GPU just fine. so check for nvidia-smi in terminal, not in python.
+
+more generally on GPU, the current plan is:
+
+- set up standard vm with GPU.
+- verify that it works for training with GPU.
+- clone/set up the repo from GH. Populate it according to project/src, artifacts structure. src/dev_xgb, prod_xgb, ... . artifacts/ols, xgb/model.pkl. 
+- set up prod endpoint. verify that simple sklearn model works in both dev and prod environment.
+- write xgb scripts, both dev and prod. 
+- in xgb prod script, reset tree_method to default one after training. make sure that it is deployable. if issues arise, play with different extensions when saving the model.
+  things seem to work even without modifying tree_method
+
+[on basic setup]
+- to set up things at a new VM, simply clode remote repo to its roos via 'git clone ...'.
+- then operate git in the usual way. cloning automatically links it to the remote repo.
+- re model deployment, docker containers etc see links in prod cripts.
+
+10/21:
+
+[trying to add more Kaggle projects to GCP]
+
+the question: how to efficiently mode datasets from kaggle to google buckets?
+
+The answer:
+see 'kaggle_data_transfer' file at cpu VM.
+
+10/23:
+
+[using SCP]
+first, install gcloud on a local machine.
+then use https://cloud.google.com/compute/docs/instances/transfer-files#transfergcloud to move files from the local machine to the vm.
+try putting them into tmp folder.
+
+[linux file system]
+to copy file from root/tmp into  home/projects_gcp/... do this: cp /tmp/kp11-spacetitanic.ipynb projects_gcp/space_titanic/src
+</> in path means go to root. <>means go to home.
+for some reason, cd /, then cd home does not lead to 'home' folder. that 'home' folder is different from actual home folder!
+home folder may be the one at root/home/jupyter/
+
+10/26:
+
+I have created another GPU machine, for the case us-central1 will be out of GPUs.
+I can use this new VM (us-west) for evth. But keep in mind that deployment code parameterized for us-central. 
+i can either change that or i can avoid deploying using us-west machine and use it only for code development.
+
+I have synced two VMs (with GPU) with a single repo. It seems to work.
+I have to remember always commit-push when leaving. And always <git pull> when starting.
+If I always do that, there should be no conflicts.
+
+[sources of public streaming data]
+see gcp public Pub/Sub topics.
+e.g., bq taxirides.
+list of bq datasets: BQ -> Add data -> explore public datasets
+
+
+
+02/07:
+use cloud shell as dev environment. CE/VAI is for prod environment.
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+

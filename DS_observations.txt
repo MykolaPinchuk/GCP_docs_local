@@ -1,0 +1,67 @@
+This is a log of observations and self-advice on DS/ML
+
+10/21/22:
+
+[Building ML models]
+
+Hyperparameter tuning is a huge trap. Especially manual hyperparameter tuning, i.e., where you run tuning code many (dozens) times.
+Unless you really need that epsilon more performance or use deep learning, just use baseline hyperparameter values.
+For xgboost usually even the default hyperparameter values work pretty close to the model, tuned by optuna after 100 trials.
+So usually simply use xgb with eta = 0.2, colsample_bytree = 0.6, subsample = 0.7. This is good enough.
+If you need more performance, use 1 run of Optuna with wide hyperparemeter space, 50 trials. Pre-commit ex ante to have only 1 run.
+
+Only if there are very strong reasons (was told by a boss to build a model with the best performance possible) you may consider spending more time on hyperp tuning.
+
+
+[Re DS skillset building]
+
+have written down a map of data-related industry roles on a 2-dimensional space. SWE - DS space. See phone photos for more details.
+It seems to be a useful way to think about it. 
+I am probably at a lower/midpoint of generic DS now. The objective should be to progress to full-stach DS/MLE. And then to possibly transiotion to DL full-stach DS/MLE.
+
+Explanation:
+- Applied/research scientist role seems too high-status and sexy to be optimal. It is likely to be overrated.
+  It is probably to narrow and has limited exit options to other roles. Even more importantly, it seems the farthest from actual end users and stakeholders.
+  So those guys may have little opportunities to develop understanding of business processes.
+  Moreover, it seems to close to academia. There is a risk to end up in the quasi-academic environment.
+  So it risks suffering to from everything which is wrong with academia, which is unseen from the outside.
+
+- Business Analyst and Data Analyst is too boring and low-paid. I will fail to grow my killset there.
+  My skillset in stat/DS is alrealy an overkill for that. Even my SWE skillset may be too.
+  Moreover, there is a risk to be surrounded by idiots.
+
+- DE, SWE and MLE/MLOps is not a good match for my current skillset.
+
+- Within DS:
+-- Experimentation is too boring and full of econ types. I do not want to end up in pseudo-econ dept. Plus it is too narrow and my SWE skillset will stagnate there.
+   Moreover, there may be a bubble in those jobs.
+-- DS/data cleaner is too close to DA and suffers from similar problems.
+-- Generic DS is fine. Right now it is the best I can get. But I think that over time I can do better. 
+-- Deep learning DS is fine. The problem is that entering it now will be very difficult with my background given lack of stem education credentials. 
+   Plus it may be too high-status to be priced correctly.
+-- Full-stack DS/ML seems exactly what I should target over the next 2-3 years. It is mostly generic DS, but with better SWE skillset and broader applicability.
+   If I decide to eventually pivot to DL, then it will be easier (and safer) to do it from full-stack tabular DS to full-stck DL DS rather than
+   from tabular DS to DL DS. Plus then I will have to move to full-stack DS anyway.
+
+
+10/26/22
+
+[xgb modeling]
+For simple fast-built models, optuna is not worse hassle.
+If you want quick and dirty results, optuna is often worse than coarse gridSearchCV.
+For fast projects use baseline xgb(200, 5, 0.1, 0.8, 0.6) and coarse GSCV with at most 20 points (m_est=200, eta and max_depth vary).
+Third baseline xgb is stricly better than default xgb and is usually pretty close to GSCV and Optuna.
+Do not use optuna with fewer than 50 trials. even optuna with 100 trials can often result in significant overfitting and will work worse than even baseline xgb.
+While using optuna seems fast, irl I always have to find cv_reg which works. so this will take a lot of time.
+TLDR:
+- if plan to spend < 20 min on modeling, use baseline xgb only
+- if plan to spend 20-90 min on modeling, use baseline and GridSearchCV.
+- if plan to spend more time, go for Optuna and find good reg_cv.
+
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+navigation:
+
+ctrl+a		line beginning
+ctrl+e		line end
+ctrl+_		go to line #<>
+
+copypaste
+ctrl+v		paste what was copied outside nano
+ctrl+6		start selection
+alt+6		end selection and copy it
+ctrl+u		paste from nano buffer
+
+alt+u		undo
+
+
