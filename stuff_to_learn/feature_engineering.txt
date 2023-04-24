@@ -1,0 +1,3 @@
+- embeddings
+- how to deal with geospatial data 
+

@@ -1,0 +1,12 @@
+1. Loan project - p1, p2, p3 on development. p4 on deployment.
+   p5 with end-to-end production pipeline. simulate real-time data incoming from 70% unused data.
+   then use previously built model to simulate its production with e.g. 100 daily requests.
+   retrain the model monthly via a pipeline. shoe daily performance dashboard.
+   try to build a pipeline as a kf pipeline for (re)training and a dataflow pipeline for preprocessing.
+2. spg_stocks. similar to loans p5, but with fully real-world data.
+(3). flights, full vertex pipeline. probably not an article, just some learning project.
+4. comparison btw automl, bqml and manual modeling on some simple example.
+   p1: compare performance, cost and dev time. p2: compare the same metrics in production. 
+
+to get more projects, see whether you can replicate projects from here:
+https://cloud.google.com/architecture/reference-patterns/overview#building-an-e-commerce-recommendation-system

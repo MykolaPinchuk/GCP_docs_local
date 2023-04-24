@@ -1,0 +1,25 @@
+https://aiinpractice.com/gcp-mlops-vertex-ai-pipeline-scikit-learn/
+https://aiinpractice.com/gcp-mlops-vertex-ai-feature-store/
+
+real-time data and Vertex AI pipeline, which follows GCP best practices.
+should implement this thing first and then use it to modify spg_stocks.
+
+before implementing stuff from AI in practice, do this: 
+https://medium.com/@outsidenoxvodafone/how-to-use-google-cloud-vertex-ai-to-build-a-ml-pipeline-using-kubeflow-de61efa26fb3
+this explains how to build vertex/kubeflow pipeline.
+
+
+
+
+
+https://www.recordlydata.com/blog/how-to-get-started-with-vertex-ai-mlops
+
+
+
+
+coursera Production ML Systems Week 1 has a great example of productionalizing natality model.
+the only problem is that is is built in Patform AI. Will have to figure out how to migrate that to Vertex AI.
+Have used its frontend, works fine. its webpage looks nicer plus allows to use difefrent data types.
+See loan project.
+Have not implemented loose coupling of webapp with model api from vertex endpoint yet.
+
