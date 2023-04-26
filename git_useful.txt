@@ -1,0 +1,21 @@
+dealing with git history:
+
+git log: 					all commits
+git log -p --follow <file_name>:		commit history for a file, including its previous names
+git rev-list HEAD --oneline readme.md:		view all commits, which affected the file readme.md
+git checkout -b old-project-state <commit_id>:  create a branch containing repo state as of some old commit
+git switch:					change branches
+git branch:					see active branch
+git checkout old-project-state modeling.py:     copy a file 'modeling.py' from the branch 'old-project-state' to the active branch
+git log --diff-filter=D --summary:		show commits which deleted files
+
+
+
+
+best practices:
+after creating a repo, create gitignore with .ipynb_checkpoints immediately
+when doing significant refactoring, backup current state in a branch, named <date-state>
+
+
+
+
