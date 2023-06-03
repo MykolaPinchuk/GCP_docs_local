@@ -1,0 +1,6 @@
+### This file explains which repos/projects to set up when migrating between GCP accounts for cosy minimization.
+
+#### Resources to reset in GCP:
+- GCS.
+- Repos with main models in Vertex notebooks. 1-2 cheap CPU instances and 1 GPU instatnce.
+- BigQuery.
